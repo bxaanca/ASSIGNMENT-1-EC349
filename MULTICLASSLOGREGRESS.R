@@ -1,5 +1,3 @@
-userreviews <- merge(review_data_small, user_data_small, by="user_id")
-
 # Install and load necessary libraries
 if (!require("text2vec")) install.packages("text2vec")
 if (!require("tm")) install.packages("tm")
@@ -8,10 +6,13 @@ library(text2vec)
 library(tm)
 library(glmnet)
 
+# Merge User Information and Review Information Datasets
+userreviews <- merge(review_data_small, user_data_small, by="user_id")
+
 set.seed(1)
 userreviews <- userreviews[sample(nrow(userreviews), 100000), ]
 
-# Split data into training (80%) and test (20%) sets
+# Split data to ensure 10,000 test data observations
 train_indices <- sample(seq_len(nrow(userreviews)), size = 0.9 * nrow(userreviews))
 train_data <- userreviews[train_indices, ]
 test_data <- userreviews[-train_indices, ]
